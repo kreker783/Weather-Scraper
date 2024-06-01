@@ -4,37 +4,32 @@ from bs4 import BeautifulSoup
 
 # URL
 url = "https://www.google.com/search?client=firefox-b-d&start={}&q=weather+gdansk"
+HEADER = {
+    "User-Agent": "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:89.0) Gecko/20100101 Firefox/89.0",
+    "Language": "en-US,en;q=0.5",
+}
+
 r = requests.get(url)
 
 
-# def _get_soup(header, url):
-#     """This functions simply gets the header and url, creates a session and
-#        generates the "soup" to pass to the other functions.
+def _get_soup(header, url):
+    
+    try:
+        session = requests.Session()
+        session.headers["User-Agent"] = header["User-Agent"]
+        session.headers["Accept-Language"] = header["Language"]
+        session.headers["Content-Language"] = header["Language"]
+        html = session.get(url)
+        return BeautifulSoup(html.text, "html.parser")
+    except:
+        print(f"ERROR: Unable to retrieve data from {url}")
+        return None
 
-#     Args:
-#         header (dict): The header parameters to be used in the session.
-#         url (string): The url address to create the session.
+soup = _get_soup(HEADER, url)
+week = soup.find(id="wob_dp")
+item = week.find_all(class_='wob_df')
+# items = [item.find_all(class_='wob_t').()]
 
-#     Returns:
-#         bs4.BeautifulSoup: The BeautifoulSoup object.
-#     """
+week_temp = [[item.find(class_='wob_t').get_text() for item in item]]
 
-#     # Try to read data from URL, if it fails, return None
-#     try:
-#         session = requests.Session()
-#         session.headers["User-Agent"] = header["User-Agent"]
-#         session.headers["Accept-Language"] = header["Language"]
-#         session.headers["Content-Language"] = header["Language"]
-#         html = session.get(url)
-#         return bs(html.text, "html.parser")
-#     except:
-#         print(f"ERROR: Unable to retrieve data from {url}")
-#         return None
-
-soup = BeautifulSoup(r.content, 'html.parser')
-# week = soup.find(id="wob_dp")
-# items= soup.find_all("div", class_="wob_df")
-
-# temp = soup.find("span", id="wob_tm")
-
-print(soup)
+print(week_temp)
