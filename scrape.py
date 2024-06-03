@@ -1,15 +1,15 @@
 import requests
 import pandas as pd
 from bs4 import BeautifulSoup
+import pprint
 
-# URL
-url = "https://www.google.com/search?q=weather+gdansk&hl=en"
+
 HEADER = {
     "User-Agent": "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:89.0) Gecko/20100101 Firefox/89.0",
     "Accept-Language": "en-US,en;q=0.5",
 }
 
-def _get_soup(header, url):
+def _get_soup(header, city):
     
     try:
         session = requests.Session()
@@ -17,6 +17,8 @@ def _get_soup(header, url):
             "User-Agent": header["User-Agent"],
             "Accept-Language": header["Accept-Language"]
         })
+
+        url = f"https://www.google.com/search?q=weather+{city}&hl=en"
         html = session.get(url)
         return BeautifulSoup(html.text, "html.parser")
     except:
@@ -26,14 +28,39 @@ def _get_soup(header, url):
 def get_todays_forecast(soup):
     
     temp = soup.find(id="wob_tm").get_text()
-    con = soup.find(id="wob_tci").attrs['alt']
+    con = soup.find(id="wob_dc").get_text()
+    rain_chance = soup.find(id="wob_pp").get_text()
+    wind = soup.find(id="wob_ws").get_text()
+
+    result = {
+        "today": {
+            "temperature": temp,
+            "condition": con,
+            "rain_chance": rain_chance,
+            "wind": wind
+        }
+    } 
     
-    return {temp: con}
+    return result
 
-soup = _get_soup(HEADER, url)
-week = soup.find(id="wob_dp")
-item = week.find_all(class_='wob_df')
+def get_week_forecast(soup):
+    
+    week = soup.find(id="wob_dp")
+    item = week.find_all(class_='wob_df')
+    week_forecast = dict()
 
-week_temp = [item.find(class_='wob_t').get_text() for item in item]
+    for value in item[1:]:
+        print(value.find(class_='Z1VzSb').attrs['aria-label'])
+        week_forecast[value.find(class_='Z1VzSb').attrs['aria-label']] = {
+            "temperature": value.find(class_='wob_t').get_text(),
+            "condition": value.find(class_='YQ4gaf').attrs['alt']
+        }
+    
+    return week_forecast
 
-print(get_todays_forecast(soup))
+soup = _get_soup(HEADER, "New York")
+
+weather = {**get_todays_forecast(soup), **get_week_forecast(soup)}
+
+# print(get_week_forecast(soup))
+pprint.pprint(weather)
