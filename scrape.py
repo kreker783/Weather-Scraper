@@ -2,6 +2,7 @@ import requests
 import pandas as pd
 from bs4 import BeautifulSoup
 import pprint
+import re
 
 
 HEADER = {
@@ -33,7 +34,7 @@ def get_todays_forecast(soup):
     wind = soup.find(id="wob_ws").get_text()
 
     result = {
-        "today": {
+        "Today": {
             "temperature": temp,
             "condition": con,
             "rain_chance": rain_chance,
@@ -43,6 +44,17 @@ def get_todays_forecast(soup):
     
     return result
 
+def get_hourly_forecast(soup):
+        
+        # hourly = soup.find(id="wob_hh")
+        item = soup.find_all(class_=re.compile('wob_gs_l\b(100|[1-9]?[0-9])\b'))
+        hourly_forecast = dict()
+    
+        for value in item:
+            print(value) 
+        
+        return hourly_forecast
+
 def get_week_forecast(soup):
     
     week = soup.find(id="wob_dp")
@@ -50,7 +62,6 @@ def get_week_forecast(soup):
     week_forecast = dict()
 
     for value in item[1:]:
-        print(value.find(class_='Z1VzSb').attrs['aria-label'])
         week_forecast[value.find(class_='Z1VzSb').attrs['aria-label']] = {
             "temperature": value.find(class_='wob_t').get_text(),
             "condition": value.find(class_='YQ4gaf').attrs['alt']
@@ -63,4 +74,4 @@ soup = _get_soup(HEADER, "New York")
 weather = {**get_todays_forecast(soup), **get_week_forecast(soup)}
 
 # print(get_week_forecast(soup))
-pprint.pprint(weather)
+pprint.pprint(get_hourly_forecast(soup))
