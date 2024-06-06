@@ -44,17 +44,6 @@ def get_todays_forecast(soup):
     
     return result
 
-def get_hourly_forecast(soup):
-        
-        # hourly = soup.find(id="wob_hh")
-        item = soup.find_all(class_=re.compile('wob_gs_l\b(100|[1-9]?[0-9])\b'))
-        hourly_forecast = dict()
-    
-        for value in item:
-            print(value) 
-        
-        return hourly_forecast
-
 def get_week_forecast(soup):
     
     week = soup.find(id="wob_dp")
@@ -69,9 +58,6 @@ def get_week_forecast(soup):
     
     return week_forecast
 
-soup = _get_soup(HEADER, "New York")
-
-weather = {**get_todays_forecast(soup), **get_week_forecast(soup)}
-
-# print(get_week_forecast(soup))
-pprint.pprint(get_hourly_forecast(soup))
+def get_weather(city):
+    soup = _get_soup(HEADER, city)
+    return {**get_todays_forecast(soup), **get_week_forecast(soup)}

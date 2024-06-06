@@ -1,4 +1,5 @@
 from flask import Flask, render_template
+import scrape
 
 # Flask constructor takes the name of 
 # current module (__name__) as argument.
@@ -9,8 +10,10 @@ app = Flask(__name__)
 # the associated function.
 @app.route('/')
 # ‘/’ URL is bound with hello_world() function.
-def hello_world():
-    return render_template('index.html')
+def weather_scrapper():
+    forecast = scrape.get_weather('New York')
+    print(forecast)
+    return render_template('index.html', forecast=forecast)
 
 # main driver function
 if __name__ == '__main__':
