@@ -1,19 +1,19 @@
-from flask import Flask, render_template
+from flask import Flask, render_template, request
 import scrape
+import json
+import requests
 
-# Flask constructor takes the name of 
-# current module (__name__) as argument.
 app = Flask(__name__)
 
-# The route() function of the Flask class is a decorator, 
-# which tells the application which URL should call 
-# the associated function.
 @app.route('/')
-# ‘/’ URL is bound with hello_world() function.
 def weather_scrapper():
-    forecast = scrape.get_weather('New York')
-    print(forecast)
-    return render_template('index.html', forecast=forecast)
+    ip = request.remote_addr
+    url = f"https://ipinfo.io/{ip}/json"
+    r = requests.get(url)
+    j = json.loads(r.text)
+
+    print(j)
+    return render_template('index.html')
 
 # main driver function
 if __name__ == '__main__':
