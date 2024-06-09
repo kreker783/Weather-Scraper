@@ -14,9 +14,9 @@ def weather_scrapper():
     url = f"https://ipinfo.io/{ip}/json"
     r = requests.get(url)
     j = json.loads(r.text)
+    city = j['city']
 
-    print(j)
-    return render_template('index.html', j=j)
+    return render_template('index.html', city=city)
 
 # main driver function
 if __name__ == '__main__':
