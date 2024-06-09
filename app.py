@@ -13,7 +13,7 @@ def weather_scrapper():
     j = json.loads(r.text)
 
     print(j)
-    return render_template('index.html')
+    return render_template('index.html', j=j)
 
 # main driver function
 if __name__ == '__main__':
