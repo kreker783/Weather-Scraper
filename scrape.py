@@ -58,6 +58,30 @@ def get_week_forecast(soup):
     
     return week_forecast
 
+def convert_conditions(forecast):
+    conditions = {
+        "Sunny": ["Clear", "Sunny", "Mostly sunny", "Partly sunny"],
+        "Cloudy": ["Partly cloudy", "Mostly cloudy", "Cloudy"],
+        "Rainy": ["Light rain", "Isolated thunderstorms", "Scattered thunderstorms", 
+                  "Rainy but periodically clear", "Thunderstorms and rain", "Scattered showers"],
+        "Windy": ["Windy"],
+    }
+
+
+    for day in forecast:
+        categorized = False
+        for condition in conditions:
+            if forecast[day]["condition"] in conditions[condition]:
+                forecast[day]["condition"] = condition
+                categorized = True
+                break
+        if not categorized:
+            forecast[day]["condition"] = f"Unknown - {forecast[day]['condition']}"
+    
+    return forecast
+
+
 def get_weather(city):
     soup = _get_soup(HEADER, city)
-    return {**get_todays_forecast(soup), **get_week_forecast(soup)}
+    forecast = {**get_todays_forecast(soup), **get_week_forecast(soup)}
+    return convert_conditions(forecast)
