@@ -60,10 +60,11 @@ def get_week_forecast(soup):
 
 def convert_conditions(forecast):
     conditions = {
-        "Sunny": ["Clear", "Sunny", "Mostly sunny", "Partly sunny"],
+        "Sunny": ["Clear", "Sunny", "Mostly sunny", "Partly sunny", "Clear with periodic clouds"],
         "Cloudy": ["Partly cloudy", "Mostly cloudy", "Cloudy"],
         "Rainy": ["Light rain", "Isolated thunderstorms", "Scattered thunderstorms", 
-                  "Rainy but periodically clear", "Thunderstorms and rain", "Scattered showers"],
+                  "Rainy but periodically clear", "Thunderstorms and rain", "Scattered showers", 
+                  "Showers"],
         "Windy": ["Windy"],
     }
 
