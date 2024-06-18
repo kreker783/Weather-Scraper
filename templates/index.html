@@ -3,13 +3,31 @@
 <head>
     <title>Welcome to My Website</title>
     <link rel="stylesheet" href="static/styles.css">
+
+    <style>
+        #left {
+            background-image: url('static/images/pexels-john-tekeridis-21837-754419.jpg');
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            background-size: cover;
+            width: 60%;
+            height: 100%;
+        }
+    </style>
 </head>
 
 <body>
 
     <div id="container">
         <div id="left">
+            <span class="today temp">{{ forecast.Today.temperature }}&deg;</span>
+            <span class="today">
+                <h2>{{ city }}</h2>
+                <p>Modnay</p>
+            </span>
+            <span >
 
+            </span>
         </div>
         <div id="right">
 
