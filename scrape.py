@@ -68,12 +68,27 @@ def convert_conditions(forecast):
         "Windy": ["Windy"],
     }
 
+    conditions_signs = {
+        "Sunny": '<i class="fa-solid fa-sun"></i>',
+        "Cloudy": '<i class="fa-solid fa-cloud-sun"></i>',
+        "Rainy": '<i class="fa-solid fa-cloud-sun-rain"></i>',
+        "Windy": '<i class="fa-solid fa-wind"></i>',
+    }
+
+    conditions_image = {
+        "Sunny": 'clear-sky.jpg',
+        "Cloudy": 'cloudy.jpg',
+        "Rainy": 'rainy.jpg',
+        "Windy": 'windy.jpg',
+    }
 
     for day in forecast:
         categorized = False
         for condition in conditions:
             if forecast[day]["condition"] in conditions[condition]:
                 forecast[day]["condition"] = condition
+                forecast[day]["condition_sign"] = conditions_signs[condition] 
+                forecast[day]["condition_image"] = conditions_image[condition]
                 categorized = True
                 break
         if not categorized:

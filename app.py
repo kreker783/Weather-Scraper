@@ -17,7 +17,7 @@ def weather_scrapper():
     # j = json.loads(r.text)
     # city = j['city']
     city = "Warsaw"
-    return render_template('index.html', forecast=get_weather(city))
+    return render_template('index.html', forecast=get_weather(city), city=city)
 
 # main driver function
 if __name__ == '__main__':

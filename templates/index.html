@@ -3,15 +3,22 @@
 <head>
     <title>Welcome to My Website</title>
     <link rel="stylesheet" href="static/styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@200..700&display=swap" rel="stylesheet">
+    <script src="https://kit.fontawesome.com/f1c43a80e3.js" crossorigin="anonymous"></script>
 
     <style>
         #left {
-            background-image: url('static/images/pexels-john-tekeridis-21837-754419.jpg');
+            background-image: url('static/images/{{ forecast.Today.condition_image }}');
             background-repeat: no-repeat;
             background-attachment: fixed;
             background-size: cover;
             width: 60%;
             height: 100%;
+            align-items: flex-end;
+            justify-content: flex-start;
+            display: flex;
         }
     </style>
 </head>
@@ -21,12 +28,13 @@
     <div id="container">
         <div id="left">
             <span class="today temp">{{ forecast.Today.temperature }}&deg;</span>
-            <span class="today">
-                <h2>{{ city }}</h2>
-                <p>Modnay</p>
+            <span class="today city">
+                {{ city }} <br>
+                <span class="day">Monday</span>
             </span>
-            <span >
-
+            <span class="today con">
+                {{ forecast.Today.condition_sign|safe }} <br>
+                {{forecast.Today.condition}}
             </span>
         </div>
         <div id="right">
