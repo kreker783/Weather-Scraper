@@ -27,7 +27,7 @@ body {
 
 #right {
     background-color: #0d1117;
-    width: 35%;
+    width: 40%;
     margin-left: auto;
     margin-right: 0;
     border-left: solid 1px black;
@@ -84,13 +84,12 @@ body {
     color: #e06c14;
     outline: none;
     transition: .5s;
-    
     position: absolute;
     right: 0;
 }
 
 .box:hover input{
-    width: 350px;
+    width: 610px;
     background: #3b3640;
     border-radius: 10px;
 }

@@ -39,10 +39,22 @@
         </div>
         <div id="right">
             <div class="box">
-                <form name="search">
+                <form name="search" action="{{ url_for('get_city') }}" method="post">
                     <input type="text" class="input" name="txt" onmouseout="this.value = ''; this.blur();">
                 </form>
                 <i class="fas fa-search"></i>
+            </div>
+
+            <div>
+                {% for day, con in forecast.items() %}
+                    {% if day != 'Today' %}
+                        <div class="box">
+                            <span class="weeks_day">{{ day. }}</span>
+                            <span class="weeks_temp">{{ c }}&deg;</span>
+                                <!-- <span class="weeks_con">{{ day.condition_sign|safe }} {{ day.condition }}</span> -->
+                        </div>
+                    {% endif %}
+                {% endfor %}
             </div>
         </div>
     </div>

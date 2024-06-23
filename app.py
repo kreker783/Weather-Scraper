@@ -19,6 +19,11 @@ def weather_scrapper():
     city = "Warsaw"
     return render_template('index.html', forecast=get_weather(city), city=city)
 
+@app.route('/', methods=['POST'])
+def get_city():
+    city = request.form['txt']
+    return render_template('index.html', forecast=get_weather(city), city=city)
+
 # main driver function
 if __name__ == '__main__':
 
