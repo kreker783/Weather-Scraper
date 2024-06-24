@@ -7,7 +7,7 @@ from scrape import get_weather
 app = Flask(__name__)
 
 @app.route('/')
-def weather_scrapper():
+def weather_scrapper(message=""):
     # if request.headers.getlist("X-Forwarded-For"):
     #     ip = request.headers.getlist("X-Forwarded-For")[0]
     # else:
@@ -17,12 +17,16 @@ def weather_scrapper():
     # j = json.loads(r.text)
     # city = j['city']
     city = "Warsaw"
-    return render_template('index.html', forecast=get_weather(city), city=city)
+    forecast = get_weather(city)
+    return render_template('index.html', forecast=forecast, city=city, error=message)
 
 @app.route('/', methods=['POST'])
 def get_city():
     city = request.form['txt']
-    return render_template('index.html', forecast=get_weather(city), city=city)
+    forecast = get_weather(city)
+    if forecast == None:
+        return weather_scrapper(message="City not found")
+    return render_template('index.html', forecast=forecast, city=city)
 
 # main driver function
 if __name__ == '__main__':

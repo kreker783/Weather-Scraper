@@ -61,10 +61,10 @@ def get_week_forecast(soup):
 def convert_conditions(forecast):
     conditions = {
         "Sunny": ["Clear", "Sunny", "Mostly sunny", "Partly sunny", "Clear with periodic clouds"],
-        "Cloudy": ["Partly cloudy", "Mostly cloudy", "Cloudy"],
+        "Cloudy": ["Partly cloudy", "Mostly cloudy", "Cloudy", "Cloudy with brief rain"],
         "Rainy": ["Light rain", "Isolated thunderstorms", "Scattered thunderstorms", 
                   "Rainy but periodically clear", "Thunderstorms and rain", "Scattered showers", 
-                  "Showers"],
+                  "Showers", 'Rain', 'Thundershower'],
         "Windy": ["Windy"],
     }
 
@@ -99,5 +99,9 @@ def convert_conditions(forecast):
 
 def get_weather(city):
     soup = _get_soup(HEADER, city)
-    forecast = {**get_todays_forecast(soup), **get_week_forecast(soup)}
+    try:
+        forecast = {**get_todays_forecast(soup), **get_week_forecast(soup)}
+    except:
+        print(f"ERROR: Unable to retrieve data for {city}")
+        return None
     return convert_conditions(forecast)

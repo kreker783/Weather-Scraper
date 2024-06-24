@@ -45,13 +45,14 @@
                 <i class="fas fa-search"></i>
             </div>
 
-            <div>
+            <div id="week_forecast">
                 {% for day, con in forecast.items() %}
                     {% if day != 'Today' %}
-                        <div class="box">
-                            <span class="weeks_day">{{ day. }}</span>
-                            <span class="weeks_temp">{{ c }}&deg;</span>
-                                <!-- <span class="weeks_con">{{ day.condition_sign|safe }} {{ day.condition }}</span> -->
+                        <div class="day_forecast">
+                            <span class="weeks_day">{{ day }}</span>
+                            <span class="weeks_temp">{{ con.temperature }}&deg;</span>
+                            <span class="weeks_day">{{ con.condition_sign|safe }}</span>
+                            <span class="weeks_day">{{ con.condition }}</span>
                         </div>
                     {% endif %}
                 {% endfor %}
@@ -66,5 +67,11 @@
             {{ city }}
         </p>
     </div> -->
+    
+    {% if message%}
+        <script type="text/javascript">
+            alert( "Something" );
+        </script>
+    {% endif %}
 </body>
 </html>
