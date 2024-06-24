@@ -8,15 +8,14 @@ app = Flask(__name__)
 
 @app.route('/')
 def weather_scrapper(message=""):
-    # if request.headers.getlist("X-Forwarded-For"):
-    #     ip = request.headers.getlist("X-Forwarded-For")[0]
-    # else:
-    #     ip = request.remote_addr
-    # url = f"https://ipinfo.io/{ip}/json"
-    # r = requests.get(url)
-    # j = json.loads(r.text)
-    # city = j['city']
-    city = "Warsaw"
+    if request.headers.getlist("X-Forwarded-For"):
+        ip = request.headers.getlist("X-Forwarded-For")[0]
+    else:
+        ip = request.remote_addr
+    url = f"https://ipinfo.io/{ip}/json"
+    r = requests.get(url)
+    j = json.loads(r.text)
+    city = j['city']
     forecast = get_weather(city)
     return render_template('index.html', forecast=forecast, city=city, error=message)
 
