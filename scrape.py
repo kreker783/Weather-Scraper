@@ -1,8 +1,5 @@
 import requests
-import pandas as pd
 from bs4 import BeautifulSoup
-import pprint
-import re
 
 
 HEADER = {
@@ -11,7 +8,17 @@ HEADER = {
 }
 
 def _get_soup(header, city):
-    
+    """
+    Retrieves the BeautifulSoup object for the specified city's weather page.
+
+    Args:
+        header (dict): The header information for the HTTP request.
+        city (str): The name of the city.
+
+    Returns:
+        BeautifulSoup: The BeautifulSoup object containing the parsed HTML.
+
+    """
     try:
         session = requests.Session()
         session.headers.update({
@@ -27,7 +34,16 @@ def _get_soup(header, city):
         return None
     
 def get_todays_forecast(soup):
-    
+    """
+    Retrieves the forecast for today from the BeautifulSoup object.
+
+    Args:
+        soup (BeautifulSoup): The BeautifulSoup object containing the parsed HTML.
+
+    Returns:
+        dict: A dictionary containing the forecast for today.
+
+    """
     temp = soup.find(id="wob_tm").get_text()
     con = soup.find(id="wob_dc").get_text()
     rain_chance = soup.find(id="wob_pp").get_text()
@@ -45,7 +61,16 @@ def get_todays_forecast(soup):
     return result
 
 def get_week_forecast(soup):
-    
+    """
+    Retrieves the forecast for the week from the BeautifulSoup object.
+
+    Args:
+        soup (BeautifulSoup): The BeautifulSoup object containing the parsed HTML.
+
+    Returns:
+        dict: A dictionary containing the forecast for the week.
+
+    """
     week = soup.find(id="wob_dp")
     item = week.find_all(class_='wob_df')
     week_forecast = dict()
@@ -59,6 +84,16 @@ def get_week_forecast(soup):
     return week_forecast
 
 def convert_conditions(forecast):
+    """
+    Converts the weather conditions in the forecast dictionary to a simplified format.
+
+    Args:
+        forecast (dict): A dictionary containing the weather forecast data.
+
+    Returns:
+        dict: The modified forecast dictionary with simplified weather conditions.
+
+    """
     conditions = {
         "Sunny": ["Clear", "Sunny", "Mostly sunny", "Partly sunny", "Clear with periodic clouds"],
         "Cloudy": ["Partly cloudy", "Mostly cloudy", "Cloudy", "Cloudy with brief rain"],
@@ -98,6 +133,16 @@ def convert_conditions(forecast):
 
 
 def get_weather(city):
+    """
+    Retrieves the weather forecast for the specified city.
+
+    Args:
+        city (str): The name of the city.
+
+    Returns:
+        dict: A dictionary containing the weather forecast.
+
+    """
     soup = _get_soup(HEADER, city)
     try:
         forecast = {**get_todays_forecast(soup), **get_week_forecast(soup)}
